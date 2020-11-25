@@ -9,14 +9,14 @@
                 v-else
                 :style="avatarStyle"
                 class="avatar" 
-                :src="AvatarImage"
+                :src="currentAvatar"
             >
         </div>
     </div>
 </template>
 
 <script>
-import AvatarImage from '@/assets/img/Avatar.png'
+import AvatarImage from '@/assets/img/avatar/Avatar.png';
 import Spinner from '@/components/loading/Spinner';
 import { mapGetters } from 'vuex';
 
@@ -27,14 +27,21 @@ export default {
     },
     data() {
         return {
-            AvatarImage,
             windowHeight: 0
         }
     },
     computed: {
         ...mapGetters({
-            windowSizes: "windowSize/sizes"
+            windowSizes: "windowSize/sizes",
+            shopItemBuyed: "shopItemBuyed/data"
         }),
+        currentCloth() {
+            return this.shopItemBuyed.filter(c => c.type == "cloth").find(c => c.active);
+        },
+        currentAvatar() {
+            if(!this.currentCloth) return AvatarImage;
+            return this.currentCloth.avatarImg;
+        },
         isAvatarLoading() {
             return this.$wait.loading("avatar");
         },

@@ -5,6 +5,7 @@ import {router} from '@/store/supportState/router';
 import {wait} from '@/store/supportState/wait';
 import {userInfo} from '@/store/userInfo';
 import {shopItemBuyed} from '@/store/shopItemBuyed';
+import {tasks} from '@/store/tasks';
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ const modules = {
     router,
     wait,
     userInfo,
-    shopItemBuyed
+    shopItemBuyed,
+    tasks
 }
 
 const store = new Vuex.Store({

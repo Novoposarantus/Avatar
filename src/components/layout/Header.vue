@@ -19,22 +19,42 @@
                     <div v-else class="text">{{itCoins}}</div>
                 </div>
             </div>
-            <div v-if="showCloth">
-                <button
-                    type="button"
-                    class="cloth-button"
-                    @click="triggerShop"
-                >
-                    <font-awesome-icon class="icon" icon="tshirt"/> 
-                </button>
+            <div class="d-flex align-center">
+                <div v-if="showCloth">
+                    <button
+                        type="button"
+                        class="cloth-button"
+                        @click="triggerCloth"
+                    >
+                        <font-awesome-icon class="icon" icon="tshirt"/> 
+                    </button>
+                </div>
+                <div v-if="showFood">
+                    <button
+                        type="button"
+                        class="cloth-button"
+                        @click="triggerFood"
+                    >
+                        <font-awesome-icon class="icon" icon="car-battery"/> 
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="items" v-if="showItems">
+        <div class="items" v-if="showClothItems">
             <ShopItems
                 class="shop-item"
-                v-for="cloth in shopItemBuyed"
+                v-for="cloth in cloths"
                 :key="cloth.id"
                 :shopItem="cloth"
+                @use="onDress(cloth)"
+            />
+        </div>
+        <div class="items" v-if="showFoodItems">
+            <ShopItems
+                class="shop-item"
+                v-for="food in foods"
+                :key="food.id"
+                :shopItem="food"
             />
         </div>
     </div>
@@ -43,17 +63,18 @@
 <script>
 import ShopItems from '@/components/ShopItem';
 import Spinner from '@/components/loading/Spinner';
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-    name: "PersonInfo",
+    name: "Header",
     components: {
         Spinner,
         ShopItems
     },
     data() {
         return {
-            showItems: false
+            showClothItems: false,
+            showFoodItems: false,
         }
     },
     computed: {
@@ -63,6 +84,12 @@ export default {
             shopItemBuyed: "shopItemBuyed/data",
             windowSizes: "windowSize/sizes"
         }),
+        cloths() {
+            return this.shopItemBuyed.filter(c => c.type == "cloth")
+        },
+        foods() {
+            return this.shopItemBuyed.filter(c => c.type == "food")
+        },
         isPowerLoading() {
             return this.$wait.loading("avatar-power");
         },
@@ -80,7 +107,10 @@ export default {
             }
         },
         showCloth() {
-            return this.shopItemBuyed.length > 0;
+            return this.cloths.length > 0;
+        },
+        showFood() {
+            return this.foods.length > 0;
         },
         headerStyle() {
             return {
@@ -89,11 +119,27 @@ export default {
         }
     },
     methods: {
-        triggerShop() {
-            this.showItems = !this.showItems;
+        ...mapActions({
+            dress: "shopItemBuyed/DRESS",
+            setTastAllow: "tasks/SET_ALLOW"
+        }),
+        triggerCloth() {
+            this.showFoodItems = false;
+            this.showClothItems = !this.showClothItems;
             setTimeout(() => {
                 this.$resize.event();
             }, 0);
+        },
+        triggerFood() {
+            this.showClothItems = false;
+            this.showFoodItems = !this.showFoodItems;
+            setTimeout(() => {
+                this.$resize.event();
+            }, 0);
+        },
+        onDress(shopItem) {
+            this.dress(shopItem);
+            this.setTastAllow(2);
         }
     }
 }

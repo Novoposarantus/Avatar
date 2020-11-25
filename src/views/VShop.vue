@@ -1,12 +1,23 @@
 <template>
     <div class="main-page">
-        <ShopItems
-            v-for="cloth in shop"
-            :key="cloth.id"
-            :shopItem="cloth"
-            isShop
-            @buy="buy(cloth)"
-        />
+        <div>
+            <ShopItems
+                v-for="food in foods"
+                :key="food.id"
+                :shopItem="food"
+                isShop
+                @buy="onBuy(food)"
+            />
+        </div>
+        <div>
+            <ShopItems
+                v-for="cloth in cloths"
+                :key="cloth.id"
+                :shopItem="cloth"
+                isShop
+                @buy="onBuy(cloth)"
+            />
+        </div>
     </div>
 </template>
 
@@ -28,12 +39,23 @@ export default {
     computed: {
         isShopLoading() {
             return this.$wait.loading("shop");
+        },
+        cloths() {
+            return this.shop.filter(s => s.type == "cloth");
+        },
+        foods() {
+            return this.shop.filter(s => s.type == "food");
         }
     },
     methods: {
         ...mapActions({
-            buy: "shopItemBuyed/ADD"
-        })
+            buy: "shopItemBuyed/ADD",
+            addCoins: "userInfo/ADD_COINS"
+        }),
+        onBuy(shopItem) {
+            this.buy(shopItem);
+            this.addCoins(shopItem.price * -1);
+        }
     }
 }
 </script>

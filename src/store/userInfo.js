@@ -27,6 +27,9 @@ export const userInfo = {
         "SET_ITCOINS": (state, itCoins) => {
             state.itCoins = itCoins;
         },
+        "ADD_COINS": (state, itCoins) => {
+            state.itCoins = state.itCoins + itCoins;
+        }
     },
     actions: {
         "GET_AVATAR_POWER": async (store, id) => {
@@ -60,6 +63,10 @@ export const userInfo = {
             return await actionBody(store, async () => {
                 commit("SET_ITCOINS", 0);
             });
+        },
+        "ADD_COINS": async (store, coins) => {
+            const {commit} = store;
+            commit("ADD_COINS", coins);
         },
     }
 }

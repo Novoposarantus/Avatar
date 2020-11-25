@@ -1,22 +1,26 @@
 <template>
     <div class="main-page">
-        <Spinner
-            v-if="isTasksLoading"
-            class="spinner"
+        <TaskItem
+            v-for="task in tasks"
+            :key="task.id"
+            :task="task"
         />
-        tasks
     </div>
 </template>
 
 <script>
-import Spinner from '@/components/loading/Spinner';
+import TaskItem from '@/components/TaskItem';
+import { mapGetters } from 'vuex';
 
 export default {
     name: "VTasks",
     components: {
-        Spinner
+        TaskItem
     },
     computed: {
+        ...mapGetters({
+            tasks: "tasks/tasks"
+        }),
         isTasksLoading() {
             return this.$wait.loading("tasks");
         }

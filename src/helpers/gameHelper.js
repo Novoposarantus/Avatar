@@ -1,10 +1,15 @@
 import {wait} from '@/plugins/wait-plug';
+import {tasks} from '@/constants';
+import jwt_decode from "jwt-decode";
 
 async function getAvatarPower(store) {
     const $wait = wait(store);
     const {dispatch} = store;
+    var urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const decoded = token && jwt_decode(token);
     $wait.start("avatar-power");
-    await dispatch("userInfo/GET_AVATAR_POWER", "282967");
+    await dispatch("userInfo/GET_AVATAR_POWER", decoded?.isu_id ?? "282967");
     $wait.stop("avatar-power");
 }
 
@@ -14,6 +19,14 @@ async function getAvatar(store) {
     $wait.start("avatar");
     await dispatch("userInfo/GET_AVATAR");
     $wait.stop("avatar");
+}
+
+async function getTasks(store) {
+    const $wait = wait(store);
+    const {dispatch} = store;
+    $wait.start("tasks");
+    await dispatch("tasks/SET", tasks);
+    $wait.stop("tasks");
 }
 
 async function getItcoins(store) {
@@ -31,5 +44,6 @@ export const startGame = async (store) => {
         getAvatarPower(store),
         getAvatar(store),
         getItcoins(store),
+        getTasks(store)
     ])
 }

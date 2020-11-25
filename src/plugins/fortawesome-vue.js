@@ -7,7 +7,9 @@ import {
     faTasks,
     faFistRaised,
     faCoins,
-    faTshirt
+    faTshirt,
+    faCarBattery,
+    faCheck
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -16,7 +18,9 @@ library.add(
     faTasks,
     faFistRaised,
     faCoins,
-    faTshirt
+    faTshirt,
+    faCarBattery,
+    faCheck
 );
 
 export default function () {

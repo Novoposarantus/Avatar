@@ -1,10 +1,10 @@
 <template>
-    <div class="shop-item" :class="itemClass" >
-        <img :src="shopItem.img">
-        <div v-if="isShop" class="shop-info" @click="onBuy">
+    <div class="shop-item" :class="itemClass">
+        <img :src="shopItem.img" @click="onClick">
+        <div v-if="isShop" class="shop-info">
             <template v-if="canBuy">
                 <div><font-awesome-icon class="icon" icon="coins"/></div>
-                <div class="text">{{shopItem.price}}</div>
+                <div class="text" :class="iconClass">{{shopItem.price}}</div>
             </template>
             <div v-else>
                 Куплен
@@ -30,10 +30,34 @@ export default {
     },
     computed: {
         ...mapGetters({
-            shopItemBuyed: "shopItemBuyed/data"
+            shopItemBuyed: "shopItemBuyed/data",
+            itCoins: "userInfo/itCoins"
         }),
+        hasMoney() {
+            return this.itCoins >= this.shopItem.price
+        },
         canBuy() {
             return this.isShop && !this.shopItemBuyed.find(x => x.id == this.shopItem.id)
+        },
+        iconClass() {
+            return {
+                'no-money': !this.hasMoney
+            }
+        },
+        isCloth() {
+            return this.shopItem.type == "cloth";
+        },
+        isFood() {
+            return this.shopItem.type == "food";
+        },
+        currentCloth() {
+            return this.shopItemBuyed.filter(c => c.type == "cloth").find(c => c.active);
+        },
+        isActualCloth() {
+            return this.isCloth && this.currentCloth && this.currentCloth.id == this.shopItem.id;
+        },
+        canUse() {
+            return !this.isShop && ((this.isCloth && this.currentCloth && this.currentCloth.id != this.shopItem.id) || !this.currentCloth ||  this.isFood);
         },
         itemClass() {
             return {
@@ -42,14 +66,26 @@ export default {
                 'ultra-rare': this.shopItem.rarity == 3,
                 'imortal': this.shopItem.rarity == 4,
                 'arcane': this.shopItem.rarity == 5,
-                'can-buy': this.canBuy
+                'can-buy': (this.canBuy && this.hasMoney) || this.canUse,
+                'active': this.isActualCloth && !this.isShop
             }
         }
     },
     methods: {
+        onClick() {
+            if(this.isShop) {
+                this.onBuy();
+            } else  {
+                this.onUse();
+            }
+        },
         onBuy() {
-            if(!this.canBuy) return;
+            if(!this.canBuy || !this.hasMoney) return;
             this.$emit("buy");
+        },
+        onUse() {
+            if(this.isShop || this.isActualCloth) return;
+            this.$emit("use");
         }
     }
 }
@@ -79,6 +115,8 @@ export default {
     .shop-item.arcane
         background: $arcane-back
         border-color: $arcane
+    .shop-item.active
+        border-color: $task-allow
     @media screen and (max-width: $sm - 1px)
         img
             max-width: 150px
@@ -93,4 +131,6 @@ export default {
         .icon
             margin-right: 10px
             color: $menu
+        .no-money
+            color: red
 </style>
