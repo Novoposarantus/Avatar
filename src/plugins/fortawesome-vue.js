@@ -4,13 +4,19 @@ import {library} from '@fortawesome/fontawesome-svg-core'
 import {
     faShoppingCart,
     faUserAstronaut,
-    faTasks
+    faTasks,
+    faFistRaised,
+    faCoins,
+    faTshirt
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
     faShoppingCart,
     faUserAstronaut,
-    faTasks
+    faTasks,
+    faFistRaised,
+    faCoins,
+    faTshirt
 );
 
 export default function () {

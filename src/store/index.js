@@ -4,6 +4,7 @@ import {windowSize} from '@/store/supportState/windowSize';
 import {router} from '@/store/supportState/router';
 import {wait} from '@/store/supportState/wait';
 import {userInfo} from '@/store/userInfo';
+import {shopItemBuyed} from '@/store/shopItemBuyed';
 
 Vue.use(Vuex);
 
@@ -11,7 +12,8 @@ const modules = {
     windowSize,
     router,
     wait,
-    userInfo
+    userInfo,
+    shopItemBuyed
 }
 
 const store = new Vuex.Store({

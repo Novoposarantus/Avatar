@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <div class="main-wrapper">
-        <Header/>
-        <Main/>
-        <Footer/>
+        <Header ref="header"/>
+        <Main ref="main"/>
+        <Footer ref="footer"/>
     </div>
   </div>
 </template>
@@ -27,10 +27,14 @@ export default {
       setWindowSize: "windowSize/SET_SIZE"
     }),
     matchWindow() {
-        this.setWindowSize({
-          windowWidth: window.innerWidth,
-          windowHeight: window.innerHeight
-        });
+      this.setWindowSize({
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
+        headerHeight: this.$refs.header.$refs.header.clientHeight,
+        headerHeightWithShop: this.$refs.header.$el.clientHeight,
+        mainWidth: this.$refs.main.$el.clientWidth,
+        footerHeight: this.$refs.footer.$el.clientHeight
+      });
     }
   },
   created() {
@@ -67,13 +71,19 @@ export default {
   
   @media screen and (min-width: $sm)
     .main-wrapper
-        max-width: 480px
+      max-width: 480px
   @media screen and (min-width: $md)
     .main-wrapper
-        max-width: 700px
-  ::-webkit-scrollbar 
-    width: 5px
-  
+      max-width: 700px
+    ::-webkit-scrollbar 
+      width: 5px
+      height: 5px
+  @media screen and (max-width: $sm - 1px)
+    .main-wrapper
+      max-width: 480px
+    ::-webkit-scrollbar 
+      width: 0.1px
+      height: 0.1px
 
   ::-webkit-scrollbar-track
     box-shadow: inset 0 0 5px #272727

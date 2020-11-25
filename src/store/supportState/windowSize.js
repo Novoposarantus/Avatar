@@ -1,17 +1,14 @@
 export const windowSize = {
     namespaced: true,
     state: {
-        windowWidth: {},
-        windowHeight: {}
+        sizes: null
     },
     getters: {
-        canView: state  => state.windowWidth > 1000 && state.windowHeight > 700
+        sizes: state => state.sizes
     },
     mutations: {
-        "SET_SIZE": (state, {windowWidth, windowHeight}) => {
-            state.windowWidth = windowWidth;
-            state.windowHeight = windowHeight;
-        },
-        "SET_STATE": () => {},
+        "SET_SIZE": (state, sizes) => {
+            state.sizes = sizes;
+        }
     }
 }

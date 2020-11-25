@@ -12,7 +12,7 @@ function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function sleep() {
-    await timeout(3000);
+export async function sleep(sleepTime) {
+    await timeout(sleepTime);
 }
 

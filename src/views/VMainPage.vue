@@ -1,20 +1,24 @@
 <template>
     <div class="main-page">
-        <Spinner
-            v-if="isAvatarLoading"
-            class="spinner" 
-        />
-        <img 
-            v-else 
-            class="avatar" 
-            :src="AvatarImage"
-        >
+        <div class="main-page-item" ref="item" >
+            <Spinner
+                v-if="isAvatarLoading"
+                class="spinner"
+            />
+            <img 
+                v-else
+                :style="avatarStyle"
+                class="avatar" 
+                :src="AvatarImage"
+            >
+        </div>
     </div>
 </template>
 
 <script>
 import AvatarImage from '@/assets/img/Avatar.png'
 import Spinner from '@/components/loading/Spinner';
+import { mapGetters } from 'vuex';
 
 export default {
     name: "VMainPage",
@@ -23,24 +27,42 @@ export default {
     },
     data() {
         return {
-            AvatarImage
+            AvatarImage,
+            windowHeight: 0
         }
     },
     computed: {
+        ...mapGetters({
+            windowSizes: "windowSize/sizes"
+        }),
         isAvatarLoading() {
             return this.$wait.loading("avatar");
+        },
+        avatarStyle() {
+            const height = Math.round((this.windowSizes.windowHeight 
+            - this.windowSizes.headerHeightWithShop 
+            - this.windowSizes.footerHeight) * 1);
+            return {
+                'height': `${height}px`
+            }
         }
-    }
+    },
 }
 </script>
 
 <style lang="sass" scoped>
+    @import "@/assets/styles"
     .main-page
         display: flex
-        align-items: flex-end
-        justify-content: center
+        flex-direction: column
+        .main-page-item
+            flex: 1 0 auto
+            display: flex
+            justify-content: center
+            align-items: flex-end    
+            height: 100%
+            width: 100%
     .spinner
         margin-bottom: 50vh
-    .avatar
-        height: 85vh
+        
 </style>

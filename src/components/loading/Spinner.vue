@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-$width-sm: 2px
+$width-sm: 4px
 $width-xl: 10px
 
 
