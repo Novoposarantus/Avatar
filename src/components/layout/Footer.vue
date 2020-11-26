@@ -33,7 +33,8 @@ export default {
     computed: {
         ...mapGetters({
             windowSizes: "windowSize/sizes",
-            currentHistoryStep: "history/currentHistory"
+            currentHistoryStep: "history/currentHistory",
+            anyAllowTask: "tasks/anyAllow"
         }),
         canClickShop() {
             return !this.currentHistoryStep || this.currentHistoryStep?.shop
@@ -56,7 +57,8 @@ export default {
         },
         tasksClass() {
             return {
-                'active': this.$router.route.name == pages.tasks.name
+                'active': this.$router.route.name == pages.tasks.name,
+                'notification': this.anyAllowTask
             }
         },
         footerStyle() {
@@ -112,6 +114,8 @@ export default {
         .menu-icon.active,
         .menu-icon:hover
             background: $menu-hover
+        .menu-icon.notification
+            color: $task-allow
         .menu-icon:last-child
             width: 34%
     @media screen and (max-width: $sm - 1px)

@@ -27,7 +27,7 @@ export default {
             }
         },
         canGetReward() {
-            return this.currentHistoryStep?.activeTask
+            return !this.currentHistoryStep || this.currentHistoryStep?.activeTask
         }
     },
     methods: {

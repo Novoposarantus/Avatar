@@ -2,6 +2,8 @@ import {wait} from '@/plugins/wait-plug';
 import {tasks} from '@/constants';
 import jwt_decode from "jwt-decode";
 
+const debug = true;
+
 async function getAvatarPower(store) {
     const $wait = wait(store);
     const {dispatch} = store;
@@ -38,6 +40,7 @@ async function getItcoins(store) {
 }
 
 function startHistory(store) {
+    if(debug) return;
     const {dispatch} = store;
     dispatch("history/START");
 }
@@ -52,4 +55,7 @@ export const startGame = async (store) => {
         getTasks(store)
     ]);
     startHistory(store);
+    if(debug) {
+        store.dispatch("userInfo/ADD_COINS", 10000);
+    }
 }

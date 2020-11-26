@@ -58,7 +58,7 @@
                 v-for="food in foods"
                 :key="food.id"
                 :shopItem="food"
-                @use="onUse(cloth)"
+                @use="onUse(food)"
             />
         </div>
     </div>
@@ -143,7 +143,8 @@ export default {
             dress: "shopItemBuyed/DRESS",
             use: "shopItemBuyed/USE",
             setTasksAllow: "tasks/SET_ALLOW",
-            historyNext: "history/NEXT"
+            historyNext: "history/NEXT",
+            triggerOpen: "shopItemBuyed/TRIGGER_OPEN"
         }),
         triggerCloth() {
             if(!this.canOpenCloths) return;
@@ -153,18 +154,14 @@ export default {
             this.$router.push({name: pages.main.name});
             this.showFoodItems = false;
             this.showClothItems = !this.showClothItems;
-            setTimeout(() => {
-                this.$resize.event();
-            }, 0);
+            this.resize();
         },
         triggerFood() {
             if(!this.canOpenFoodList) return;
             this.$router.push({name: pages.main.name});
             this.showClothItems = false;
             this.showFoodItems = !this.showFoodItems;
-            setTimeout(() => {
-                this.$resize.event();
-            }, 0);
+            this.resize();
         },
         onDress(shopItem) {
             if(!this.canDress) return;
@@ -175,19 +172,28 @@ export default {
             this.setTasksAllow(2);
         },
         onUse(shopItem) {
-            if(!this.canDress) return;
+            if(!this.canUse) return;
             if(this.currentHistoryStep?.useBattary) {
                 this.historyNext();
             }
-            this.shopItem.callback(this.$store);
+            shopItem.callback(this.$store);
             this.use(shopItem);
-        }
+        },
+        resize() {
+            setTimeout(() => {
+                this.$resize.event();
+                setTimeout(() => {
+                    this.$resize.event();
+                }, 0);
+            }, 0);
+        } 
     },
     watch: {
         '$router.route': function(newValue) {
             if(newValue.name == pages.main.name) return;
             this.showClothItems = false;
             this.showFoodItems = false;
+            this.resize();
         }
     }
 }

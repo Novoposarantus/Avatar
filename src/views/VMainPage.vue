@@ -5,55 +5,26 @@
                 v-if="isAvatarLoading"
                 class="spinner"
             />
-            <img 
-                v-else
-                :style="avatarStyle"
-                class="avatar" 
-                :src="currentAvatar"
-            >
+            <Avatar v-else/>
         </div>
     </div>
 </template>
 
 <script>
-import AvatarImage from '@/assets/img/avatar/Avatar.png';
+import Avatar from '@/components/Avatar';
 import Spinner from '@/components/loading/Spinner';
-import { mapGetters } from 'vuex';
 
 export default {
     name: "VMainPage",
     components: {
-        Spinner
-    },
-    data() {
-        return {
-            windowHeight: 0
-        }
+        Spinner,
+        Avatar
     },
     computed: {
-        ...mapGetters({
-            windowSizes: "windowSize/sizes",
-            shopItemBuyed: "shopItemBuyed/data"
-        }),
-        currentCloth() {
-            return this.shopItemBuyed.filter(c => c.type == "cloth").find(c => c.active);
-        },
-        currentAvatar() {
-            if(!this.currentCloth) return AvatarImage;
-            return this.currentCloth.avatarImg;
-        },
         isAvatarLoading() {
             return this.$wait.loading("avatar");
-        },
-        avatarStyle() {
-            const height = Math.round((this.windowSizes.windowHeight 
-            - this.windowSizes.headerHeightWithShop 
-            - this.windowSizes.footerHeight) * 1);
-            return {
-                'height': `${height}px`
-            }
         }
-    },
+    }
 }
 </script>
 

@@ -49,8 +49,11 @@ export default {
         foods() {
             return this.shop.filter(s => s.type == "food");
         },
-        canBuy() {
-            return !this.currentHistoryStep || this.currentHistoryStep?.buyJacket || this.currentHistoryStep?.buyBattary
+        canBuyCloth() {
+            return !this.currentHistoryStep || this.currentHistoryStep?.buyJacket;
+        },
+        canBuyBattary() {
+            return !this.currentHistoryStep ||  this.currentHistoryStep?.buyBattary;
         }
     },
     methods: {
@@ -61,16 +64,20 @@ export default {
             historyNext: "history/NEXT"
         }),
         onBuy(shopItem) {
-            if(!this.canBuy) return;
-            if(this.currentHistoryStep?.buyJacket || this.currentHistoryStep?.buyBattary) {
+            if(!this.canBuyCloth) return;
+            if(this.currentHistoryStep?.buyJacket) {
                 this.historyNext();
             }
             this.buy(shopItem);
             this.addCoins(shopItem.price * -1);
         },
         onBuyFood(shopItem) {
-            if(!this.canBuy) return;
-            this.onBuy(shopItem);
+            if(!this.canBuyBattary) return;
+            if(this.currentHistoryStep?.buyBattary) {
+                this.historyNext();
+            }
+            this.buy(shopItem);
+            this.addCoins(shopItem.price * -1);
             this.setCharge(0.1);
         }
     }

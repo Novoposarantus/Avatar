@@ -4,7 +4,8 @@ export const tasks = {
         tasks: []
     },
     getters: {
-        tasks: state  => state.tasks
+        tasks: state  => state.tasks,
+        anyAllow: state => !!state.tasks.find(t => t.allow)
     },
     mutations: {
         "SET": (state, tasks) => {

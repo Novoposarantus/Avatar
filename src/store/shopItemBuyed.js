@@ -3,7 +3,8 @@ import Vue from 'vue';
 export const shopItemBuyed = {
     namespaced: true,
     state: {
-        data: []
+        data: [],
+        openItems: null
     },
     getters: {
         data: state  => state.data
@@ -20,7 +21,10 @@ export const shopItemBuyed = {
         "USE": (state, shopItem) => {
             const index = state.data.findIndex(d => d.id == shopItem.id);
             state.data.splice(index, 1);
-        }
+        },
+        "TRIGGER_OPEN": (state, open) => {
+            state.openItems = open;
+        },
     },
     actions: {
         "ADD": async (store, shopItem) => {
@@ -34,6 +38,10 @@ export const shopItemBuyed = {
         "USE": async (store, shopItem) => {
             const {commit} = store;
             commit("USE", shopItem);
+        },
+        "TRIGGER_OPEN": async (store, open) => {
+            const {commit} = store;
+            commit("TRIGGER_OPEN", open);
         },
     }
 }

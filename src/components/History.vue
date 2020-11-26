@@ -27,11 +27,17 @@ export default {
     },
     methods: {
         ...mapActions({
-            next: "history/NEXT"
+            next: "history/NEXT",
+            historyStop: "history/STOP",
+            setTaskAllow: "tasks/SET_ALLOW"
         }),
         onClick() {
             if(!this.currentHistoryStep?.simpleNext) return;
             this.next();
+            if(!this.currentHistoryStep) {
+                this.setTaskAllow(3);
+                this.historyStop();
+            }
         }
     }
 }

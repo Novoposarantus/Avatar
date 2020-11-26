@@ -93,6 +93,6 @@ export const userInfo = {
         "ADD_CHARGE": async (store, charge) => {
             const {commit} = store;
             commit("ADD_CHARGE", charge);
-        },
+        }
     }
 }

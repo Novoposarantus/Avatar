@@ -14,7 +14,10 @@ export const history = {
         },
         "NEXT": (state) => {
             state.currentHistory = historyList[state.currentHistory.step + 1];
-        }
+        },
+        "STOP": (state) => {
+            state.currentHistory = null;
+        }, 
     },
     actions: {
         "START": async (store) => {
@@ -24,6 +27,10 @@ export const history = {
         "NEXT": async (store) => {
             const {commit} = store;
             commit("NEXT");
+        },
+        "STOP": async (store) => {
+            const {commit} = store;
+            commit("STOP");
         },
     }
 }

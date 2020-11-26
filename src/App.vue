@@ -65,6 +65,8 @@ export default {
   @import "@/assets/styles/default-styles"
   *
     box-sizing: border-box
+    -webkit-tap-highlight-color: transparent !important
+
   html, body
     width: 100%
     padding: 0
