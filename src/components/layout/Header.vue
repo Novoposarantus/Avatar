@@ -19,6 +19,9 @@
                     <div v-else class="text">{{itCoins}}</div>
                 </div>
             </div>
+            <div v-if="showCharge">
+                Заряд: {{charge * 100}}%
+            </div>
             <div class="d-flex align-center">
                 <div v-if="showCloth">
                     <button
@@ -55,6 +58,7 @@
                 v-for="food in foods"
                 :key="food.id"
                 :shopItem="food"
+                @use="onUse(cloth)"
             />
         </div>
     </div>
@@ -63,6 +67,7 @@
 <script>
 import ShopItems from '@/components/ShopItem';
 import Spinner from '@/components/loading/Spinner';
+import {pages} from '@/constants';
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -80,9 +85,12 @@ export default {
     computed: {
         ...mapGetters({
             avatarPower: "userInfo/avatarPower",
+            currentHistoryStep: "history/currentHistory",
             itCoins: "userInfo/itCoins",
             shopItemBuyed: "shopItemBuyed/data",
-            windowSizes: "windowSize/sizes"
+            windowSizes: "windowSize/sizes",
+            charge: "userInfo/charge",
+            showCharge: "userInfo/showCharge",
         }),
         cloths() {
             return this.shopItemBuyed.filter(c => c.type == "cloth")
@@ -116,14 +124,33 @@ export default {
             return {
                 'width': `${this.windowSizes?.mainWidth}px`
             }
+        },
+        canOpenCloths() {
+            return !this.currentHistoryStep || this.currentHistoryStep?.wardrobe;
+        },
+        canOpenFoodList() {
+            return !this.currentHistoryStep || this.currentHistoryStep?.oppenFoodList;
+        },
+        canDress() {
+            return !this.currentHistoryStep || this.currentHistoryStep?.dressJacet;
+        },
+        canUse() {
+            return !this.currentHistoryStep || this.currentHistoryStep?.useBattary;
         }
     },
     methods: {
         ...mapActions({
             dress: "shopItemBuyed/DRESS",
-            setTastAllow: "tasks/SET_ALLOW"
+            use: "shopItemBuyed/USE",
+            setTasksAllow: "tasks/SET_ALLOW",
+            historyNext: "history/NEXT"
         }),
         triggerCloth() {
+            if(!this.canOpenCloths) return;
+            if(this.currentHistoryStep?.wardrobe) {
+                this.historyNext();
+            }
+            this.$router.push({name: pages.main.name});
             this.showFoodItems = false;
             this.showClothItems = !this.showClothItems;
             setTimeout(() => {
@@ -131,6 +158,8 @@ export default {
             }, 0);
         },
         triggerFood() {
+            if(!this.canOpenFoodList) return;
+            this.$router.push({name: pages.main.name});
             this.showClothItems = false;
             this.showFoodItems = !this.showFoodItems;
             setTimeout(() => {
@@ -138,8 +167,27 @@ export default {
             }, 0);
         },
         onDress(shopItem) {
+            if(!this.canDress) return;
+            if(this.currentHistoryStep?.dressJacet) {
+                this.historyNext();
+            }
             this.dress(shopItem);
-            this.setTastAllow(2);
+            this.setTasksAllow(2);
+        },
+        onUse(shopItem) {
+            if(!this.canDress) return;
+            if(this.currentHistoryStep?.useBattary) {
+                this.historyNext();
+            }
+            this.shopItem.callback(this.$store);
+            this.use(shopItem);
+        }
+    },
+    watch: {
+        '$router.route': function(newValue) {
+            if(newValue.name == pages.main.name) return;
+            this.showClothItems = false;
+            this.showFoodItems = false;
         }
     }
 }
@@ -168,6 +216,7 @@ export default {
             .icon
                 margin-right: 20px
         .icon
+            font-size: 32px
             margin-right: 10px
             color: $menu
         .text
@@ -177,12 +226,6 @@ export default {
         border: none
         outline: none
         background: transparent
-    @media screen and (max-width: $sm - 1px)
-        .icon
-            font-size: 40px
-    @media screen and (min-width: $sm)
-        .icon
-            font-size: 32px
     .items
         display: flex
         overflow: auto

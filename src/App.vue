@@ -4,6 +4,7 @@
         <Header ref="header"/>
         <Main ref="main"/>
         <Footer ref="footer"/>
+        <History v-if="currentHistoryStep"/>
     </div>
   </div>
 </template>
@@ -12,15 +13,22 @@
 import Footer from '@/components/layout/Footer';
 import Main from '@/components/layout/Main';
 import Header from '@/components/layout/Header';
+import History from '@/components/History';
 import {startGame} from '@/helpers';
-import {mapMutations} from 'vuex';
+import {mapMutations, mapGetters} from 'vuex';
 
 export default {
   name: 'App',
   components: {
     Header,
     Main,
-    Footer
+    Footer,
+    History
+  },
+  computed: {
+    ...mapGetters({
+        currentHistoryStep: "history/currentHistory"
+    })
   },
   methods: {
     ...mapMutations({

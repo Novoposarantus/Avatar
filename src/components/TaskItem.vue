@@ -6,7 +6,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import {historySteps} from '@/constants';
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
     name: "TaskItem",
     props: {
@@ -16,19 +18,30 @@ export default {
         }
     },
     computed: {
+        ...mapGetters({
+            currentHistoryStep: "history/currentHistory"
+        }),
         itemClass() {
             return {
                 'allow': this.task.allow
             }
+        },
+        canGetReward() {
+            return this.currentHistoryStep?.activeTask
         }
     },
     methods: {
         ...mapActions({
             addCoins: "userInfo/ADD_COINS",
-            setTaskActiveted: "tasks/SET_ACTIVED"
+            setTaskActiveted: "tasks/SET_ACTIVED",
+            historyNext: "history/NEXT"
         }),
         getReward() {
-            if(!this.task.allow) return;
+            if(!this.task.allow || !this.canGetReward) return;
+            if(this.currentHistoryStep?.step == historySteps._14
+            || this.currentHistoryStep?.step == historySteps._24) {
+                this.historyNext();
+            }
             this.addCoins(this.task.reward);
             this.setTaskActiveted(this.task.id);
         }

@@ -25,15 +25,25 @@
 </template>
 
 <script>
-import {pages} from '@/constants';
-import { mapGetters } from 'vuex'
+import {pages, historySteps} from '@/constants';
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     name: 'Footer',
     computed: {
         ...mapGetters({
-            windowSizes: "windowSize/sizes"
+            windowSizes: "windowSize/sizes",
+            currentHistoryStep: "history/currentHistory"
         }),
+        canClickShop() {
+            return !this.currentHistoryStep || this.currentHistoryStep?.shop
+        },
+        canClickTasks() {
+            return !this.currentHistoryStep || this.currentHistoryStep?.tasks
+        },
+        canClickMain() {
+            return !this.currentHistoryStep || this.currentHistoryStep?.main
+        },
         shopClass() {
             return {
                 'active': this.$router.route.name == pages.shop.name
@@ -56,13 +66,25 @@ export default {
         }
     },
     methods: {
+        ...mapActions({
+            historyNext: "history/NEXT"
+        }),
         toShop() {
+            if(!this.canClickShop) return;
+            if(this.currentHistoryStep?.step == historySteps._17) {
+                this.historyNext();
+            }
             this.$router.push({name: pages.shop.name});
         },
         toMain() {
+            if(!this.canClickMain) return;
             this.$router.push({name: pages.main.name});
         },
         toTasks() {
+            if(!this.canClickTasks) return;
+            if(this.currentHistoryStep?.step == historySteps._12) {
+                this.historyNext();
+            }
             this.$router.push({name: pages.tasks.name});
         }
     }

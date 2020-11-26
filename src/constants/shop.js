@@ -9,7 +9,10 @@ export const shop = [
         img: Battary,
         type: "food",
         rarity: 1,
-        price: 100
+        price: 100,
+        callback: (store) => {
+            store.dispatch("userInfo/ADD_CHARGE", 0.4)
+        }
     },
     {
         id: 1,

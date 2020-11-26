@@ -37,6 +37,11 @@ async function getItcoins(store) {
     $wait.stop("itcoins");
 }
 
+function startHistory(store) {
+    const {dispatch} = store;
+    dispatch("history/START");
+}
+
 export const startGame = async (store) => {
     const {commit} = store;
     commit("router/RESET");
@@ -45,5 +50,6 @@ export const startGame = async (store) => {
         getAvatar(store),
         getItcoins(store),
         getTasks(store)
-    ])
+    ]);
+    startHistory(store);
 }

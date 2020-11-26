@@ -10,12 +10,16 @@ export const userInfo = {
     state: {
         userInfo: null,
         avatar: null,
-        itCoins: null
+        itCoins: null,
+        charge: null,
+        showCharge: false
     },
     getters: {
         avatarPower: state  => state.userInfo?.game_power,
         avatar: state  => state.avatar,
-        itCoins: state  => state.itCoins
+        itCoins: state  => state.itCoins,
+        charge: state  => state.charge,
+        showCharge: state  => state.showCharge,
     },
     mutations: {
         "SET_USER_INFO": (state, userInfo) => {
@@ -27,6 +31,20 @@ export const userInfo = {
         "SET_ITCOINS": (state, itCoins) => {
             state.itCoins = itCoins;
         },
+        "SET_CHARGE": (state, charge) => {
+            state.charge = charge;
+            state.showCharge = true;
+        },
+        "ADD_CHARGE": (state, charge) => {
+            const newCharge = state.charge + charge;
+            if(newCharge > 1) {
+                state.charge = 1;
+            } else if (newCharge < 0) {
+                state.charge = 0;
+            } else {
+                state.charge = newCharge;
+            }
+        },  
         "ADD_COINS": (state, itCoins) => {
             state.itCoins = state.itCoins + itCoins;
         }
@@ -67,6 +85,14 @@ export const userInfo = {
         "ADD_COINS": async (store, coins) => {
             const {commit} = store;
             commit("ADD_COINS", coins);
+        },
+        "SET_CHARGE": async (store, charge) => {
+            const {commit} = store;
+            commit("SET_CHARGE", charge);
+        },
+        "ADD_CHARGE": async (store, charge) => {
+            const {commit} = store;
+            commit("ADD_CHARGE", charge);
         },
     }
 }

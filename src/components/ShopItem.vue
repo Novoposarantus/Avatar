@@ -37,7 +37,7 @@ export default {
             return this.itCoins >= this.shopItem.price
         },
         canBuy() {
-            return this.isShop && !this.shopItemBuyed.find(x => x.id == this.shopItem.id)
+            return this.isShop && ((this.isCloth && !this.shopItemBuyed.find(x => x.id == this.shopItem.id)) || !this.isCloth)
         },
         iconClass() {
             return {

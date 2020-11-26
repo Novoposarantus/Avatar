@@ -16,6 +16,10 @@ export const shopItemBuyed = {
             for(let i = 0; i < state.data.length; ++i) {
                 Vue.set(state.data[i], 'active', state.data[i].id == shopItem.id);
             }
+        },
+        "USE": (state, shopItem) => {
+            const index = state.data.findIndex(d => d.id == shopItem.id);
+            state.data.splice(index, 1);
         }
     },
     actions: {
@@ -26,6 +30,10 @@ export const shopItemBuyed = {
         "DRESS": async (store, shopItem) => {
             const {commit} = store;
             commit("DRESS", shopItem);
+        },
+        "USE": async (store, shopItem) => {
+            const {commit} = store;
+            commit("USE", shopItem);
         },
     }
 }
