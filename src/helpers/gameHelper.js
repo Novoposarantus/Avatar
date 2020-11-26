@@ -2,7 +2,7 @@ import {wait} from '@/plugins/wait-plug';
 import {tasks} from '@/constants';
 import jwt_decode from "jwt-decode";
 
-const debug = true;
+const debug = false;
 
 async function getAvatarPower(store) {
     const $wait = wait(store);

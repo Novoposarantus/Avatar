@@ -31,15 +31,13 @@ export default {
     components: {
         ShopItems
     },
-    data() {
-        return {
-            shop
-        }
-    },
     computed: {
         ...mapGetters({
             currentHistoryStep: "history/currentHistory"
         }),
+        shop() {
+            return shop.sort((a,b) => a.price - b.price);
+        },
         isShopLoading() {
             return this.$wait.loading("shop");
         },

@@ -11,7 +11,7 @@
             :key="cloth.id"
             class="cloths"
             :style="clothStyles" 
-            :src="cloth.img"
+            :src="cloth.avatarImg"
         >
     </div>
 </template>
@@ -35,23 +35,19 @@ export default {
             itemsOpen: "shopItemBuyed/openItems"
         }),
         currentCloths() {
-            return this.shopItemBuyed.filter(c => c.type == "cloth" || c.active);
-        },
-        currentAvatar() {
-            if(!this.currentCloth) return AvatarImage;
-            return this.currentCloth.avatarImg;
+            return this.shopItemBuyed.filter(c => c.type == "cloth" && c.active);
         },
         isAvatarLoading() {
             return this.$wait.loading("avatar");
         },
         avatarStyle() {
-            const startHeight = Math.round(this.windowSizes?.windowHeight 
+            const startHeight = Math.round((this.windowSizes?.windowHeight 
             - this.windowSizes?.headerHeight 
-            - this.windowSizes?.footerHeight);
-            const height = Math.round(this.windowSizes?.windowHeight 
+            - this.windowSizes?.footerHeight) * 0.9);
+            const height = Math.round((this.windowSizes?.windowHeight 
             - this.windowSizes?.headerHeightWithShop 
-            - this.windowSizes?.footerHeight);
-            const width = Math.round((height/startHeight) * this.windowSizes.mainWidth);
+            - this.windowSizes?.footerHeight) * 0.9);
+            const width = Math.round((height/startHeight) * this.windowSizes.mainWidth * 0.9);
             return {
                 'height': `${height}px`,
                 'width': `${width}px`

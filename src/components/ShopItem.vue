@@ -3,8 +3,14 @@
         <img :src="shopItem.img" @click="onClick">
         <div v-if="isShop" class="shop-info">
             <template v-if="canBuy">
-                <div><font-awesome-icon class="icon" icon="coins"/></div>
-                <div class="text" :class="iconClass">{{shopItem.price}}</div>
+                <div class="d-flex">
+                    <div><font-awesome-icon class="icon" icon="coins"/></div>
+                    <div class="text" :class="iconClass">{{shopItem.price}}</div>
+                </div>
+                <div v-if="shopItem.power"  class="d-flex">
+                    <div><font-awesome-icon class="icon" icon="fist-raised"/></div>
+                    <div class="text" :class="powerClass">{{shopItem.power}}</div>
+                </div>
             </template>
             <div v-else>
                 Куплен
@@ -31,10 +37,14 @@ export default {
     computed: {
         ...mapGetters({
             shopItemBuyed: "shopItemBuyed/data",
-            itCoins: "userInfo/itCoins"
+            itCoins: "userInfo/itCoins",
+            avatarPower: "userInfo/avatarPower"
         }),
         hasMoney() {
             return this.itCoins >= this.shopItem.price
+        },
+        hasPower() {
+            return this.avatarPower >= this.shopItem.power
         },
         canBuy() {
             return this.isShop && ((this.isCloth && !this.shopItemBuyed.find(x => x.id == this.shopItem.id)) || !this.isCloth)
@@ -44,6 +54,11 @@ export default {
                 'no-money': !this.hasMoney
             }
         },
+        powerClass() {
+            return {
+                'no-money': !this.hasPower
+            }
+        },
         isCloth() {
             return this.shopItem.type == "cloth";
         },
@@ -51,13 +66,16 @@ export default {
             return this.shopItem.type == "food";
         },
         currentCloth() {
-            return this.shopItemBuyed.filter(c => c.type == "cloth").find(c => c.active);
+            return this.shopItemBuyed.filter(c => c.type == "cloth" && c.active);
         },
         isActualCloth() {
-            return this.isCloth && this.currentCloth && this.currentCloth.id == this.shopItem.id;
+            return this.isCloth 
+            && this.currentCloth 
+            && this.currentCloth.length > 0 
+            && this.currentCloth.find(c => c.id == this.shopItem.id);
         },
         canUse() {
-            return !this.isShop && ((this.isCloth && this.currentCloth && this.currentCloth.id != this.shopItem.id) || !this.currentCloth ||  this.isFood);
+            return !this.isShop
         },
         itemClass() {
             return {
@@ -80,11 +98,11 @@ export default {
             }
         },
         onBuy() {
-            if(!this.canBuy || !this.hasMoney) return;
+            if(!this.canBuy || !this.hasMoney || !this.hasPower) return;
             this.$emit("buy");
         },
         onUse() {
-            if(this.isShop || this.isActualCloth) return;
+            if(this.isShop) return;
             this.$emit("use");
         }
     }
@@ -126,6 +144,7 @@ export default {
     .shop-info
         padding: 5px
         display: flex
+        justify-content: space-between
         background: white
         font-size: 20px
         .icon

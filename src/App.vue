@@ -87,7 +87,7 @@ export default {
       max-width: 700px
     ::-webkit-scrollbar 
       width: 5px
-      height: 5px
+      height: 10px
   @media screen and (max-width: $sm - 1px)
     .main-wrapper
       max-width: 480px

@@ -14,8 +14,15 @@ export const shopItemBuyed = {
             state.data.push(shopItem);
         },
         "DRESS": (state, shopItem) => {
-            for(let i = 0; i < state.data.length; ++i) {
-                Vue.set(state.data[i], 'active', state.data[i].id == shopItem.id);
+            const currentIndex = state.data.findIndex(d => d.id == shopItem.id);
+            Vue.set(state.data[currentIndex], 'active', !state.data[currentIndex].active);
+            if(state.data[currentIndex].active) {
+                for(let i = 0; i < state.data.length; ++i) {
+                    if(i == currentIndex) continue;
+                    if(state.data[i].pos == shopItem.pos) {
+                        Vue.set(state.data[i], 'active', false);
+                    }
+                }
             }
         },
         "USE": (state, shopItem) => {
