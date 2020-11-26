@@ -15,7 +15,8 @@ export const userInfo = {
         showCharge: false
     },
     getters: {
-        avatarPower: state  => state.userInfo?.game_power,
+        avatarPower: state  => state.userInfo?.game_power ?? 0,
+        name: state => state.userInfo?.firstname ?? "Незнакомец",
         avatar: state  => state.avatar,
         itCoins: state  => state.itCoins,
         charge: state  => state.charge,
@@ -62,11 +63,12 @@ export const userInfo = {
                     const user = json.users.find(u => u.attributes.isu_id == id);
                     if(user) {
                         commit("SET_USER_INFO", user.attributes);
-                        break;
+                        return;
                     }
                     length = json.users.length;
                     page++
                 }
+
             });
         },
         "GET_AVATAR": async (store) => {

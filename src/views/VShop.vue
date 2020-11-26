@@ -51,7 +51,7 @@ export default {
             return !this.currentHistoryStep || this.currentHistoryStep?.buyJacket;
         },
         canBuyBattary() {
-            return !this.currentHistoryStep ||  this.currentHistoryStep?.buyBattary;
+            return !this.currentHistoryStep || this.currentHistoryStep?.buyBattary;
         }
     },
     methods: {

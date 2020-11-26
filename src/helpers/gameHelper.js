@@ -11,7 +11,7 @@ async function getAvatarPower(store) {
     const token = urlParams.get('token');
     const decoded = token && jwt_decode(token);
     $wait.start("avatar-power");
-    await dispatch("userInfo/GET_AVATAR_POWER", decoded?.isu_id ?? "282967");
+    await dispatch("userInfo/GET_AVATAR_POWER", decoded?.isu_id);
     $wait.stop("avatar-power");
 }
 

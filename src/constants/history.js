@@ -38,7 +38,7 @@ export const historySteps = {
 export const historyList = {
     [historySteps._1]: {
         step: historySteps._1,
-        text: "Приветсвую тебя.",
+        text: "Приветсвую тебя, {firstName}",
         simpleNext: true
     },
     [historySteps._2]: {
@@ -123,7 +123,7 @@ export const historyList = {
     },
     [historySteps._18]: {
         step: historySteps._18,
-        text: "Вот, тут ты можешь тратить свои It-Coins. Можешь покупать мне более курутую одежду, чтобы выделяться на фоне остальных",
+        text: "Вот, тут ты можешь тратить свои It-Coins. Можешь покупать мне более крутую одежду, чтобы выделяться на фоне остальных",
         simpleNext: true
     },
     [historySteps._19]: {
@@ -138,7 +138,7 @@ export const historyList = {
     },
     [historySteps._21]: {
         step: historySteps._21,
-        text: "Давай купим начальную куртку, тебе как раз хватает на нее денег",
+        text: "Давай купим начальную синюю кофту, тебе как раз хватает на нее денег",
         buyJacket: true
     },
     [historySteps._22]: {
@@ -159,7 +159,7 @@ export const historyList = {
     },
     [historySteps._25]: {
         step: historySteps._25,
-        text: "Мне, как и тебе мне нужно питаться, только гречку я не люблю. Я люблю хороший электрический заряд.",
+        text: "Мне, как и тебе нужно питаться, только гречку я не люблю. Я люблю хороший электрический заряд.",
         simpleNext: true
     },
     [historySteps._26]: {
@@ -201,7 +201,7 @@ export const historyList = {
     },
     [historySteps._33]: {
         step: historySteps._33,
-        text: "Чтож, в общем все. Выполняй задания, корми меня батарейками и одевай в лучшую одежду и скоро ты уже сам будешь отправлять роботов в прошлое",
+        text: "Что ж, в общем все. Выполняй задания, корми меня батарейками и одевай в лучшую одежду и скоро ты уже сам будешь отправлять роботов в прошлое",
         simpleNext: true
     },
     [historySteps._34]: {

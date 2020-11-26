@@ -178,6 +178,11 @@ export default {
             }
             shopItem.callback(this.$store);
             this.use(shopItem);
+            if(this.foods.length <= 0) {
+                this.showFoodItems = false;
+                this.showClothItems = false;
+                this.resize();
+            }
         },
         resize() {
             setTimeout(() => {

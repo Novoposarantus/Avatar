@@ -1,17 +1,20 @@
 <template>
     <div class="history" :class="historyClass" :style="historyStyle" @click="onClick">
-        {{currentHistoryStep.text}}
+        {{text}}
     </div>
 </template>
 
 <script>
+import {historySteps} from '@/constants';
 import { mapActions, mapGetters } from 'vuex'
+
 export default {
     name: "History",
     computed: {
         ...mapGetters({
             currentHistoryStep: "history/currentHistory",
-            windowSizes: "windowSize/sizes"
+            windowSizes: "windowSize/sizes",
+            userName: "userInfo/name"
         }),
         historyStyle() {
             return {
@@ -23,6 +26,12 @@ export default {
             return {
                 'active': !this.currentHistoryStep?.simpleNext
             }
+        },
+        text() {
+            if(this.currentHistoryStep.step == historySteps._1) {
+                return this.currentHistoryStep.text.replace("{firstName}", this.userName);
+            }
+            return this.currentHistoryStep.text;
         }
     },
     methods: {

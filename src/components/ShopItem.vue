@@ -44,7 +44,7 @@ export default {
             return this.itCoins >= this.shopItem.price
         },
         hasPower() {
-            return this.avatarPower >= this.shopItem.power
+            return !this.shopItem.power || this.avatarPower >= this.shopItem.power
         },
         canBuy() {
             return this.isShop && ((this.isCloth && !this.shopItemBuyed.find(x => x.id == this.shopItem.id)) || !this.isCloth)
